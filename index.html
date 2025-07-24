@@ -96,19 +96,26 @@
     function getRandomPosition() {
       const largura = window.innerWidth - naoBtn.offsetWidth;
       const altura = window.innerHeight - naoBtn.offsetHeight;
-
       const simRect = simContainer.getBoundingClientRect();
 
-      let x, y;
-      let overlap;
+      let x, y, overlap;
+      let attempts = 0;
 
       do {
         x = Math.floor(Math.random() * largura);
         y = Math.floor(Math.random() * altura);
 
         const naoRect = { left: x, right: x + naoBtn.offsetWidth, top: y, bottom: y + naoBtn.offsetHeight };
+
         overlap = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom);
-      } while (overlap);
+        attempts++;
+      } while (overlap && attempts < 15); // 15 tentativas no máximo
+
+      if (overlap) {
+        // Se mesmo assim não achar posição, manda para um canto
+        x = largura - 10;
+        y = altura - 10;
+      }
 
       return { x, y };
     }
