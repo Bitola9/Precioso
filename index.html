@@ -84,7 +84,7 @@
 
   <div id="modal">
     <img src="https://media.tenor.com/qh2iVjPz2FgAAAAC/ronaldinho-gaucho-dancing.gif" alt="vitória!">
-    <h2>É HOJE CARALHOOOOOO😎🔥</h2>
+    <h2>É HOJE 😎🔥</h2>
   </div>
 
   <script>
@@ -93,38 +93,29 @@
     const simContainer = document.getElementById("simContainer");
     const modal = document.getElementById("modal");
 
-    function getRandomPosition() {
+    function moveNao() {
       const largura = window.innerWidth - naoBtn.offsetWidth;
       const altura = window.innerHeight - naoBtn.offsetHeight;
+
+      // posição aleatória
+      let x = Math.floor(Math.random() * largura);
+      let y = Math.floor(Math.random() * altura);
+
       const simRect = simContainer.getBoundingClientRect();
+      const naoRect = { left: x, right: x + naoBtn.offsetWidth, top: y, bottom: y + naoBtn.offsetHeight };
 
-      let x, y, overlap;
-      let attempts = 0;
-
-      do {
-        x = Math.floor(Math.random() * largura);
-        y = Math.floor(Math.random() * altura);
-
-        const naoRect = { left: x, right: x + naoBtn.offsetWidth, top: y, bottom: y + naoBtn.offsetHeight };
-
-        overlap = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom);
-        attempts++;
-      } while (overlap && attempts < 15); // 15 tentativas no máximo
-
+      // Se colidir com o botão SIM, só ajusta a posição (empurra para baixo da zona proibida)
+      const overlap = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom);
       if (overlap) {
-        // Se mesmo assim não achar posição, manda para um canto
-        x = largura - 10;
-        y = altura - 10;
+        y = simRect.bottom + 20; // empurra pra baixo do SIM
+        if (y > altura) y = altura - 10; // garante que não sai da tela
       }
 
-      return { x, y };
-    }
-
-    naoBtn.addEventListener("mouseover", () => {
-      const { x, y } = getRandomPosition();
       naoBtn.style.left = x + "px";
       naoBtn.style.top = y + "px";
-    });
+    }
+
+    naoBtn.addEventListener("mouseover", moveNao);
 
     simBtn.addEventListener("click", () => {
       modal.style.display = "flex";
