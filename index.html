@@ -91,41 +91,26 @@
     const naoBtn = document.getElementById("nao");
     const simBtn = document.getElementById("sim");
     const simContainer = document.getElementById("simContainer");
-    const titulo = document.getElementById("titulo");
     const modal = document.getElementById("modal");
 
     function getRandomPosition() {
-      const largura = window.innerWidth - naoBtn.offsetWidth - 10;
-      const altura = window.innerHeight - naoBtn.offsetHeight - 10;
+      const largura = window.innerWidth - naoBtn.offsetWidth;
+      const altura = window.innerHeight - naoBtn.offsetHeight;
 
-      let x, y, tries = 0;
-      const maxTries = 50;
+      const simRect = simContainer.getBoundingClientRect();
+
+      let x, y;
+      let overlap;
 
       do {
         x = Math.floor(Math.random() * largura);
         y = Math.floor(Math.random() * altura);
 
-        const naoRect = {
-          left: x,
-          right: x + naoBtn.offsetWidth,
-          top: y,
-          bottom: y + naoBtn.offsetHeight
-        };
+        const naoRect = { left: x, right: x + naoBtn.offsetWidth, top: y, bottom: y + naoBtn.offsetHeight };
+        overlap = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom);
+      } while (overlap);
 
-        const simRect = simContainer.getBoundingClientRect();
-        const tituloRect = titulo.getBoundingClientRect();
-
-        const overlapSim = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom);
-        const overlapTitulo = !(naoRect.right < tituloRect.left || naoRect.left > tituloRect.right || naoRect.bottom < tituloRect.top || naoRect.top > tituloRect.bottom);
-
-        if (!overlapSim && !overlapTitulo) {
-          return { x, y };
-        }
-        tries++;
-      } while (tries < maxTries);
-
-      // fallback (se não achar espaço)
-      return { x: largura - 20, y: altura - 20 };
+      return { x, y };
     }
 
     naoBtn.addEventListener("mouseover", () => {
