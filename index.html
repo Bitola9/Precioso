@@ -83,8 +83,8 @@
   <button id="nao">Não</button>
 
   <div id="modal">
-    <img id="gif" src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" alt="vitória!">
-    <h2> EITAAAAAAAAA QUE HOJE É PAUUUUU 😎🔥</h2>
+    <img id="gif" src="https://media.giphy.com/media/h4y3OZnzz0XaItSsjy/giphy.gif" alt="vitória!">
+    <h2>HOJE É PAU CARALHOOOOOO 😎🔥</h2>
   </div>
 
   <script>
@@ -92,11 +92,10 @@
     const simBtn = document.getElementById("sim");
     const simContainer = document.getElementById("simContainer");
     const modal = document.getElementById("modal");
-    const gif = document.getElementById("gif");
 
     // Preload do GIF
     const preload = new Image();
-    preload.src = gif.src;
+    preload.src = document.getElementById("gif").src;
 
     function moveNao() {
       const largura = window.innerWidth - naoBtn.offsetWidth;
