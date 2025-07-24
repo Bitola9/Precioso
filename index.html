@@ -43,7 +43,7 @@
 
     #nao {
       position: absolute;
-      top: 60%;
+      top: 70%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 5;
@@ -95,11 +95,11 @@
     const modal = document.getElementById("modal");
 
     function getRandomPosition() {
-      const largura = window.innerWidth - naoBtn.offsetWidth;
-      const altura = window.innerHeight - naoBtn.offsetHeight;
+      const largura = window.innerWidth - naoBtn.offsetWidth - 10;
+      const altura = window.innerHeight - naoBtn.offsetHeight - 10;
 
-      let x, y;
-      let isOverlapping;
+      let x, y, tries = 0;
+      const maxTries = 50;
 
       do {
         x = Math.floor(Math.random() * largura);
@@ -115,11 +115,17 @@
         const simRect = simContainer.getBoundingClientRect();
         const tituloRect = titulo.getBoundingClientRect();
 
-        isOverlapping = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom) ||
-                        !(naoRect.right < tituloRect.left || naoRect.left > tituloRect.right || naoRect.bottom < tituloRect.top || naoRect.top > tituloRect.bottom);
-      } while (isOverlapping);
+        const overlapSim = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom);
+        const overlapTitulo = !(naoRect.right < tituloRect.left || naoRect.left > tituloRect.right || naoRect.bottom < tituloRect.top || naoRect.top > tituloRect.bottom);
 
-      return { x, y };
+        if (!overlapSim && !overlapTitulo) {
+          return { x, y };
+        }
+        tries++;
+      } while (tries < maxTries);
+
+      // fallback (se não achar espaço)
+      return { x: largura - 20, y: altura - 20 };
     }
 
     naoBtn.addEventListener("mouseover", () => {
