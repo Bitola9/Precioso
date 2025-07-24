@@ -22,29 +22,31 @@
 
     h1 {
       font-size: 2rem;
-      margin-bottom: 50px; /* espaço maior entre título e botões */
+      margin-bottom: 50px;
     }
 
     .botoes {
       display: flex;
+      flex-direction: column;
       gap: 20px;
-      margin-top: 50px; /* força os botões mais para baixo */
-      position: relative;
+      margin-top: 50px;
+      align-items: center;
     }
 
     button {
       font-size: 1.2rem;
-      padding: 10px 20px;
+      padding: 10px 30px;
       cursor: pointer;
       border: none;
       border-radius: 8px;
       background-color: #ff0077;
       color: white;
       transition: 0.2s;
+      position: relative;
     }
 
     #nao {
-      position: absolute;
+      position: absolute; /* Vai se mover pela tela */
     }
 
     #modal {
@@ -73,6 +75,7 @@
 </head>
 <body>
   <h1>Vai me dar o precioso hoje?</h1>
+  
   <div class="botoes">
     <button id="sim">Sim</button>
     <button id="nao">Não</button>
@@ -80,7 +83,7 @@
 
   <div id="modal">
     <img src="https://media.tenor.com/qh2iVjPz2FgAAAAC/ronaldinho-gaucho-dancing.gif" alt="vitória!">
-    <h2>É HOJE CARALHOOOOOOOO 😎🔥</h2>
+    <h2>É HOJE CARALHOOOOOOO 😎🔥</h2>
   </div>
 
   <script>
