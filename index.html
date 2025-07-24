@@ -96,26 +96,29 @@
     function moveNao() {
       const largura = window.innerWidth - naoBtn.offsetWidth;
       const altura = window.innerHeight - naoBtn.offsetHeight;
+      const simRect = simContainer.getBoundingClientRect();
 
       // posição aleatória
       let x = Math.floor(Math.random() * largura);
       let y = Math.floor(Math.random() * altura);
 
-      const simRect = simContainer.getBoundingClientRect();
       const naoRect = { left: x, right: x + naoBtn.offsetWidth, top: y, bottom: y + naoBtn.offsetHeight };
 
-      // Se colidir com o botão SIM, só ajusta a posição (empurra para baixo da zona proibida)
+      // Se colidir com o botão SIM, ajusta a posição
       const overlap = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom);
       if (overlap) {
-        y = simRect.bottom + 20; // empurra pra baixo do SIM
-        if (y > altura) y = altura - 10; // garante que não sai da tela
+        y = simRect.bottom + 20;
+        if (y > altura) y = altura - 10;
       }
 
       naoBtn.style.left = x + "px";
       naoBtn.style.top = y + "px";
     }
 
+    // PC: mouseover
     naoBtn.addEventListener("mouseover", moveNao);
+    // Celular: touch
+    naoBtn.addEventListener("touchstart", moveNao);
 
     simBtn.addEventListener("click", () => {
       modal.style.display = "flex";
