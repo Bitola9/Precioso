@@ -83,8 +83,8 @@
   <button id="nao">Não</button>
 
   <div id="modal">
-    <img src="https://media.tenor.com/qh2iVjPz2FgAAAAC/ronaldinho-gaucho-dancing.gif" alt="vitória!">
-    <h2>É HOJE QUE REALIZO MEU SONHO SENHORRRRRRRR 😎🔥</h2>
+    <img id="gif" src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" alt="vitória!">
+    <h2>É HOJE 😎🔥</h2>
   </div>
 
   <script>
@@ -92,20 +92,23 @@
     const simBtn = document.getElementById("sim");
     const simContainer = document.getElementById("simContainer");
     const modal = document.getElementById("modal");
+    const gif = document.getElementById("gif");
+
+    // Preload do GIF
+    const preload = new Image();
+    preload.src = gif.src;
 
     function moveNao() {
       const largura = window.innerWidth - naoBtn.offsetWidth;
       const altura = window.innerHeight - naoBtn.offsetHeight;
       const simRect = simContainer.getBoundingClientRect();
 
-      // posição aleatória
       let x = Math.floor(Math.random() * largura);
       let y = Math.floor(Math.random() * altura);
 
       const naoRect = { left: x, right: x + naoBtn.offsetWidth, top: y, bottom: y + naoBtn.offsetHeight };
-
-      // Se colidir com o botão SIM, ajusta a posição
       const overlap = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom);
+      
       if (overlap) {
         y = simRect.bottom + 20;
         if (y > altura) y = altura - 10;
@@ -115,9 +118,7 @@
       naoBtn.style.top = y + "px";
     }
 
-    // PC: mouseover
     naoBtn.addEventListener("mouseover", moveNao);
-    // Celular: touch
     naoBtn.addEventListener("touchstart", moveNao);
 
     simBtn.addEventListener("click", () => {
