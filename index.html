@@ -13,24 +13,21 @@
       height: 100vh;
       overflow: hidden;
       margin: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       position: relative;
     }
 
     h1 {
       font-size: 2rem;
-      margin-bottom: 50px;
+      margin-top: 80px;
     }
 
-    .botoes {
+    .container {
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      margin-top: 50px;
       align-items: center;
+      margin-top: 40px;
+      position: relative;
+      z-index: 10;
     }
 
     button {
@@ -42,11 +39,14 @@
       background-color: #ff0077;
       color: white;
       transition: 0.2s;
-      position: relative;
     }
 
     #nao {
-      position: absolute; /* Vai se mover pela tela */
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
     }
 
     #modal {
@@ -74,28 +74,56 @@
   </style>
 </head>
 <body>
-  <h1>Vai me dar o precioso hoje?</h1>
+  <h1 id="titulo">Vai me dar o precioso hoje?</h1>
   
-  <div class="botoes">
+  <div class="container" id="simContainer">
     <button id="sim">Sim</button>
-    <button id="nao">Não</button>
   </div>
+
+  <button id="nao">Não</button>
 
   <div id="modal">
     <img src="https://media.tenor.com/qh2iVjPz2FgAAAAC/ronaldinho-gaucho-dancing.gif" alt="vitória!">
-    <h2>É HOJE CARALHOOOOOOO 😎🔥</h2>
+    <h2>É HOJE 😎🔥</h2>
   </div>
 
   <script>
     const naoBtn = document.getElementById("nao");
     const simBtn = document.getElementById("sim");
+    const simContainer = document.getElementById("simContainer");
+    const titulo = document.getElementById("titulo");
     const modal = document.getElementById("modal");
 
-    naoBtn.addEventListener("mouseover", () => {
+    function getRandomPosition() {
       const largura = window.innerWidth - naoBtn.offsetWidth;
       const altura = window.innerHeight - naoBtn.offsetHeight;
-      const x = Math.floor(Math.random() * largura);
-      const y = Math.floor(Math.random() * altura);
+
+      let x, y;
+      let isOverlapping;
+
+      do {
+        x = Math.floor(Math.random() * largura);
+        y = Math.floor(Math.random() * altura);
+
+        const naoRect = {
+          left: x,
+          right: x + naoBtn.offsetWidth,
+          top: y,
+          bottom: y + naoBtn.offsetHeight
+        };
+
+        const simRect = simContainer.getBoundingClientRect();
+        const tituloRect = titulo.getBoundingClientRect();
+
+        isOverlapping = !(naoRect.right < simRect.left || naoRect.left > simRect.right || naoRect.bottom < simRect.top || naoRect.top > simRect.bottom) ||
+                        !(naoRect.right < tituloRect.left || naoRect.left > tituloRect.right || naoRect.bottom < tituloRect.top || naoRect.top > tituloRect.bottom);
+      } while (isOverlapping);
+
+      return { x, y };
+    }
+
+    naoBtn.addEventListener("mouseover", () => {
+      const { x, y } = getRandomPosition();
       naoBtn.style.left = x + "px";
       naoBtn.style.top = y + "px";
     });
